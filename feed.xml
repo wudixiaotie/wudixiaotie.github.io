@@ -1,53 +1,30 @@
+---
+layout: null
+---
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Big If</title>
-    <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-</description>
-    <link>http://wudixiaotie.github.io/</link>
-    <atom:link href="http://wudixiaotie.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 29 Dec 2015 14:48:26 +0800</pubDate>
-    <lastBuildDate>Tue, 29 Dec 2015 14:48:26 +0800</lastBuildDate>
-    <generator>Jekyll v3.0.1</generator>
-    
+    <title>{{ site.title | xml_escape }}</title>
+    <description>{{ site.description | xml_escape }}</description>
+    <link>{{ site.url }}{{ site.baseurl }}/</link>
+    <atom:link href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" rel="self" type="application/rss+xml"/>
+    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    <generator>Jekyll v{{ jekyll.version }}</generator>
+    {% for post in site.posts limit:10 %}
       <item>
-        <title>Beam Internal Doc -- DelayedDealloc!</title>
-        <description>&lt;h2 id=&quot;section&quot;&gt;延迟释放内存&lt;/h2&gt;
-
-&lt;h1 id=&quot;section-1&quot;&gt;问题：&lt;/h1&gt;
-
-&lt;p&gt;怎样在多线程时中进行内存的管理呢？有个简单的方法：内存分配器给所有的线程分配和销毁内存的时候都被一个全局锁保护，但这会造成锁争，效率底下。那么给每个调度器单独的一个内存分配器实例呢，这样就避免了锁争，但是有这样一种情况，本线程创建的内存，有可能被其他线程正在使用，那么当内存需要销毁的时候怎么办呢。难道要等原线程的内存分配器不处在被锁状态才能释放？这样你等我，我等他的还是效率底下啊。&lt;/p&gt;
-
-&lt;h1 id=&quot;section-2&quot;&gt;解决方案：&lt;/h1&gt;
-
-&lt;p&gt;为了减少由内存分配器引起的锁争，我们给每个调度器进程一个无锁状态的内存分配器，给非调度器的进程一个有锁的内存分配器。调度器在erlang虚拟机beam中是做主要工作的（所有的erlang进程的运行都是调度器来做的，erlang进程只是一个虚拟的概念），所以这样能避免大部分的锁争。&lt;/p&gt;
-
-&lt;p&gt;既然我们仍然需要一种方法在线程之间共享内存，我们就要管理他们。只有创建一个内存的内存分配器所属的线程才有资格释放这个内存。当其他调度器进程需要释放某个由其他调度器所属分配器实例创建的内存的时候，他把需要被释放的内存概括成一个“释放任务”通知给创建这个内存的内存分配器所属的线程，每个调度器线程都有一个类似“收件箱”的东西来接收这类“释放任务”，当调度器线程探测到了这类“释放任务”后，他会真正的释放这个内存。&lt;/p&gt;
-
-&lt;p&gt;“收件箱”是由一个单链表实现的。链表节点的顺序无所谓。插入新节点在链表的尾部附近，而直接在尾端插入新节点容易在多线程同事插入大量节点时导致不必要的数据竞争。&lt;/p&gt;
-
-&lt;h1 id=&quot;section-3&quot;&gt;为什么呢？&lt;/h1&gt;
-
-&lt;p&gt;正常情况下，我们始终有个指针（尾指针）是指向链表的尾部的，但在多线程同时访问链表的时候我们就不能这么做了，而是把尾指针指向尾部附近的某个节点，位置不是固定的，只要在尾部附近就行。&lt;/p&gt;
-
-&lt;p&gt;正常情况下，我们往链表插入数据，我们就把原来尾部节点的指针由null改成指向新节点，然后链表的尾指针也指向这个新节点。&lt;/p&gt;
-
-&lt;p&gt;但是当有大量的线程来执行上面说的操作的话，有可能1线程刚刚把尾部的节点E的指针指向新创建的节点E1，2线程就把E的指针指向E2,结果导致了1线程刚刚的操作完全失败了，E1节点被弄丢了。为了避免这种情况，每次有线程需要插入节点时都是在单链表尾部节点的附近插入节点，这样只要同一时间不同的线程锁插入的节点位置不是同一个节点后的话，就不会产生数据竞争，从而避免了错误，又提高了效率。&lt;/p&gt;
-
-&lt;p&gt;对于某个调度器线程来说，自己的“收件箱”是怎么来维护的呢？首先他有两个指针指向这个收件箱，第一个指针是指向单链表头的（head.first），还有一个是指向单链表尾的（head.unref_end），每当这两个指针不一致的时候，调度器线程就知道应该执行内存的释放任务了。&lt;/p&gt;
-
-&lt;p&gt;因为单链表是不断更新的，不断会有其他的线程向这个单链表的尾部附近插入“释放任务”，所以调度器线程会定期的移动head.unref_end去单链表的最尾端。&lt;/p&gt;
-
-&lt;p&gt;以上就是延迟释放的大概需要了解的地方。源代码我没，有什么问题欢迎大家指正。&lt;/p&gt;
-</description>
-        <pubDate>Tue, 29 Dec 2015 14:21:17 +0800</pubDate>
-        <link>http://wudixiaotie.github.io/erlang/2015/12/29/beam-internal-doc-DelayedDealloc.html</link>
-        <guid isPermaLink="true">http://wudixiaotie.github.io/erlang/2015/12/29/beam-internal-doc-DelayedDealloc.html</guid>
-        
-        
-        <category>erlang</category>
-        
+        <title>{{ post.title | xml_escape }}</title>
+        <description>{{ post.content | xml_escape }}</description>
+        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+        <link>{{ post.url | prepend: site.baseurl | prepend: site.url }}</link>
+        <guid isPermaLink="true">{{ post.url | prepend: site.baseurl | prepend: site.url }}</guid>
+        {% for tag in post.tags %}
+        <category>{{ tag | xml_escape }}</category>
+        {% endfor %}
+        {% for cat in post.categories %}
+        <category>{{ cat | xml_escape }}</category>
+        {% endfor %}
       </item>
-    
+    {% endfor %}
   </channel>
 </rss>
