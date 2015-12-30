@@ -7,6 +7,6 @@ categories: linux
 
 #查看某个进程的线程(Check threads of a process):  
 {% highlight console %}
-1. ps -ef -T  | grep beam.smp
-2. lsof -p PID
+1. $ ps -T -p <pid>
+2. $ top -H -p <pid>
 {% endhighlight %}
