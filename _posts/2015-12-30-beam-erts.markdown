@@ -1,0 +1,30 @@
+---
+layout: post
+title:  "BEAM & ERTS"
+date:   2015-12-30 16:45:00 +0800
+categories: erlang
+---
+
+#**BEAM是什么？**
+BEAM全称是Bogdan/Björn's Erlang Abstract Machine
+
+#**ERTS是什么？**
+ETRS全称是Erlang Run-Time System
+
+#**erlang的进程是什么？**
+erlang的进程实际上就是一堆内存里的数据，他是虚拟的概念。实际工作都是由一个叫scheduler的线程去处理。
+
+#**scheduler是什么？**
+scheduler是整个虚拟机实际工作的线程，他有4个队列，分别为'max', 'high', 'normal', 'low'，这个4个队列里放的就是erlang的进程，队列里的erlang进程按顺序被scheduler运行。这4个队列是有优先级的，字面上的意思max>high>normal=low，当高优先级的队列中有进程的时候，优先运行高优先级队列中的erlang进程。
+
+#**smp是什么？**
+smp的目的是充分利用当前计算机的多核特性，给每个核绑定一个scheduler，这样达到并行处理的目的，提高了beam的处理能力。现在的beam都是默认启动smp的，所以默认就有多个scheduler，否则就只有一个scheduler线程。
+
+#**公平调度和抢占式调度是什么？**
+每个erlang进程都有个reduction counter（进程创建的时候赋值2000），当scheduler执行完一次完整的erlang函数调用后，该erlang进程的reduction counter减一，当reduction counter归零，这个erlang进程重新会本队列的尾部，scheduler运行队列中下一个erlang进程，这样才能保证每个erlang的进程都能有机会被scheduler执行，而不会因为某个erlang进程一直在运行而阻塞整个scheduler的执行队列，这就是抢占式调度或者公平调度。
+
+#**scheduler的任务迁移是什么？**
+在smp模式下，多个scheduler有多个erlang进程的执行队列，BEAM会对所有的队列做统计求出个队列长度平均值，并根据现有的情况作出一个迁移计划来，把队列长度高于平均值的scheduler的队列里的待执行erlang进程迁移到队列小于平均值的scheduler的队列中，最终维护大体平均的执行队列。
+
+#**什么是async threads？**
+async threads实际上是处理IO的一些事。

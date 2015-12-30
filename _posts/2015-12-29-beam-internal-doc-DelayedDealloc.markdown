@@ -4,6 +4,7 @@ title:  "Beam Internal Doc -- DelayedDealloc!"
 date:   2015-12-29 14:21:17 +0800
 categories: erlang
 ---
+
 ##延迟释放内存  
 
 #问题：  
