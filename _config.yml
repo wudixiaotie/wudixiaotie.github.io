@@ -19,5 +19,5 @@ github_username:  wudixiaotie
 markdown: kramdown
 
 gems: [jekyll-paginate]
-paginate: 2
+paginate: 10
 paginate_path: "page:num"
