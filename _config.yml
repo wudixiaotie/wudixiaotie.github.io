@@ -17,3 +17,6 @@ github_username:  wudixiaotie
 
 # Build settings
 markdown: kramdown
+
+paginate: 2
+paginate_path: "page:num"
