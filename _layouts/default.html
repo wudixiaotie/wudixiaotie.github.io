@@ -10,6 +10,18 @@
     <div class="page-content">
       <div class="wrapper">
         {{ content }}
+
+        <div class="category-list">
+          <div class="category-header">所有分类</div>
+          <ul>
+            {% for category in site.categories %}
+              <li>
+                <a href="/{{ category | first }}">{{ category | first }}({{ category | last | size }})</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
       </div>
     </div>
 

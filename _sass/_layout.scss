@@ -175,6 +175,44 @@
     font-size: 20px;
 }
 
+.home {
+    float: left;
+    width: 82%;
+}
+
+.category-list {
+    position: relative;
+    float: right;
+    width: 18%;
+}
+
+.category-header {
+    font-size: 1.1em;
+    color: #2ca6cb;
+    padding: 0 0 0.3125em 0;
+    border-bottom: 0.1875em solid #ccc;
+}
+
+.category-list ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+.category-list ul li {
+    border-bottom: 1px solid #ccc;
+}
+
+.category-list ul li a {
+    display: block;
+    padding: 0.5em 5%;
+    text-decoration: none;
+    color: #5CA8E4;
+}
+
+.category-list ul li a:hover {
+    color: #EF4343;
+}
+
 .post-list {
     margin-left: 0;
     list-style: none;
