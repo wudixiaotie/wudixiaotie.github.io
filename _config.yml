@@ -18,6 +18,20 @@ github_username:  wudixiaotie
 # Build settings
 markdown: kramdown
 
-gems: [jekyll-paginate]
+# Gems
+gems: [jekyll-paginate, jekyll-archives]
+
+# Pagination
 paginate: 10
 paginate_path: "page:num"
+
+# Archives
+jekyll-archives:
+  enabled: [categories, month]
+  layout: 'archive'
+  permalinks:
+    year: '/:year/'
+    month: '/:year/:month/'
+    day: '/:year/:month/:day/'
+    tag: '/tag/:name/'
+    category: '/category/:name/'
