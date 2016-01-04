@@ -5,19 +5,19 @@ date:   2015-12-30 16:11:17 +0800
 categories: linux
 ---
 
-#查看某个进程的线程(Check threads of a process):  
+###查看某个进程的线程(Check threads of a process):  
 {% highlight console %}
 1. $ ps -T -p <pid>
 2. $ top -H -p <pid>
 {% endhighlight %}
 
-#网络相关信息:  
+###网络相关信息:  
 {% highlight console %}
 $ netstat -apn | grep <Port>
 $ netstat -st
 {% endhighlight %}
 
-#抓包:  
+###抓包:  
 1. tcpdump 要用root权限去运行。
 2. tcpdump的参数：
     -D 表示查看网络适配器列表
