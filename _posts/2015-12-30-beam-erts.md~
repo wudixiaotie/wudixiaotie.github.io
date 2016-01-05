@@ -27,7 +27,7 @@ smp的目的是充分利用当前计算机的多核特性，给每个核绑定�
 在smp模式下，多个scheduler有多个erlang进程的执行队列，BEAM会对所有的队列做统计求出个队列长度平均值，并根据现有的情况作出一个迁移计划来，把队列长度高于平均值的scheduler的队列里的待执行erlang进程迁移到队列小于平均值的scheduler的队列中，最终维护大体平均的执行队列。
 
 #**什么是async threads？**
-async threads实际上是处理IO的一些事。
+async threads实际上是处理IO的一些事。由于IO基本上都是时间特别长的任务，所以单独的线程来处理，否则放在scheduler中严重阻塞ERTS的运行。
 
 #**什么是allocator？**
 allocator是ERTS自己的内存分配器，每个调度器线程都有自己的一整套allocator，包括
@@ -55,7 +55,19 @@ allocator是ERTS自己的内存分配器，每个调度器线程都有自己的�
 * **mseg_alloc**  
     一个内存片段分配器。mseg_alloc被用来给其他的Erlang分配器分配内存片段，并且仅仅在操作系统支持mmap系统调用的时候才能有效使用。这些分配给其他内存分配器的内存片段在被释放的时候不会立即销毁并还给操作系统，而是作为片段缓存一段时间。当其他内存分配器调用mseg_alloc来获取内存片段的时候，优先使用缓存的内存片段，而不是向操作系统创建新的内存片段。这样做是为了尽量少的做操作系统调用。
 
-之所以要定义这么多不同的alloctor是为了让不同的数绝结构分别放在不同的内存区域中，期望有效的减少内存碎片的产生。
+之所以要定义这么多不同的allocator是为了让不同的数绝结构分别放在不同的内存区域中，期望有效的减少内存碎片的产生。
 
 #**什么是carrier？**
-由于erlang语言有不同的数据类型，例如binary，list，atom，port，process等等。不同的数据类型需要不同的数据结构在内存中存储，实际存储数据的东西叫区块（block）。而ERTS的allocator不能直接操作区块，而是操作叫载体（carrier）的东西。载体分为单块载体和多块载体，单块载体内部只存储一个区块，多块载体内部存储多个区块。
+ERTS的内存分配器（allocator）管理的内存区域中，内存区块被放置的空间叫做载体（carrier）。一个载体只被放置在独立的内存片段（由mseg_alloc分配）或堆片段（由sys_alloc分配）中。多块载体（Multiblock carrier）用来储存多个内存区块（block）。单块载体（Singleblock carrier）用来存储单个内存区块。内存区块的大小大于**sbct**（singleblock carrier threshold）参数的被存储在单块载体中，小于sbct参数的存储在多块载体中。通常任何一个内存分配器都会创建一个主多块载体（main multiblock carrier），主多块载体永远不会被释放掉，它的大小由**mmbcs**（main multiblock carrier size）参数来决定。
+
+**largest multiblock carrier size(lmbcs)**:多块载体最大值  
+**smallest multiblock carrier size(smbcs)**:多块载体最小值  
+**multiblock carrier growth stages(mbcgs)**:多块载体增长阶段  
+
+一个内存分配器通过mseg_alloc分配的多块载体大小，由最近的多块载体大小**nc**和上述的几个值来决定：  
+当nc <= mbcgs时：smbcs+nc*(lmbcs-smbcs)/mbcgs  
+当nc > mbcgs时：lmbcs  
+
+通过sys_alloc分配的多块载体大小，由ycs（sys_alloc carrier size ）参数来决定。
+
+#**内存分配策略（memory allocation strategy）？**
