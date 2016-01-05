@@ -30,7 +30,32 @@ smp的目的是充分利用当前计算机的多核特性，给每个核绑定�
 async threads实际上是处理IO的一些事。
 
 #**什么是allocator？**
-allocator是ERTS自己的内存分配器，由于erlang语言有不同的数据类型，例如binary，list，atom，port等等。不同的数据类型需要不同的数据结构在内存中存储，存储单一数据结构的东西叫区块（block）。而ERTS的allocator不能直接操作区块，而是操作叫载体（carrier）的东西。载体分为单块载体和多块载体，单块载体内部只存储一个区块，多块载体内部存储多个区块。
+allocator是ERTS自己的内存分配器，每个调度器线程都有自己的一整套allocator，包括
 
-#**什么是allocator instance？**
-由于载体内的区块是多种多样的，所以allocator也需要有多个，每个allocator instance是根据allocator的数据结构实例化的实例。每个调度器线程有多个allocator instance。
+* **temp_alloc**  
+    用于分配临时数据的内存分配器
+* **eheap_alloc**  
+    用于分配Erlang堆数据的内存分配器，例如Erlang进程的独占堆。
+* **binary_alloc**  
+    用于分配Erlang二进制的内存分配器。
+* **ets_alloc**  
+    用于分配ETS数据的内存分配器。
+* **driver_alloc**  
+    用于分配驱动（driver）的内存分配器。
+* **sl_alloc**  
+    用于分配短生存周期的内存区块（memory blocks）的内存分配器。
+* **ll_alloc**  
+    用于分配长生存周期的内存区块的内存分配器，例如Erlang的代码。
+* **fix_alloc**  
+    用于分配被频繁调用的固定长度的数据类型的内存分配器。
+* **std_alloc**  
+    用于分配大多数没被其他类型的内存分配器分配的数据的内存分配器。
+* **sys_alloc**  
+    用于通过malloc实现从OS里获取内存的内存分配器。
+* **mseg_alloc**  
+    一个内存片段分配器。mseg_alloc被用来给其他的Erlang分配器分配内存片段，并且仅仅在操作系统支持mmap系统调用的时候才能有效使用。这些分配给其他内存分配器的内存片段在被释放的时候不会立即销毁并还给操作系统，而是作为片段缓存一段时间。当其他内存分配器调用mseg_alloc来获取内存片段的时候，优先使用缓存的内存片段，而不是向操作系统创建新的内存片段。这样做是为了尽量少的做操作系统调用。
+
+之所以要定义这么多不同的alloctor是为了让不同的数绝结构分别放在不同的内存区域中，期望有效的减少内存碎片的产生。
+
+#**什么是carrier？**
+由于erlang语言有不同的数据类型，例如binary，list，atom，port，process等等。不同的数据类型需要不同的数据结构在内存中存储，实际存储数据的东西叫区块（block）。而ERTS的allocator不能直接操作区块，而是操作叫载体（carrier）的东西。载体分为单块载体和多块载体，单块载体内部只存储一个区块，多块载体内部存储多个区块。
