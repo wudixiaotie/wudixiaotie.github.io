@@ -74,27 +74,27 @@ ERTS的内存分配器（allocator）管理的内存区域中，内存区块被�
 空闲的内存区块都是马上被合并的，但是空闲区块位于被使用的区块中间的话会造成时间复杂度的提升。内存的分配策略是找到这些空闲的区块的方法。究竟采用那种策略由**as**（allocation strategy）参数决定。
 
 * **Best fit**  
-    策略：找到满足所需大小的区块中最小的区块。
+    策略：找到满足所需大小的区块中最小的区块。  
     实现：平衡二叉查找树，时间复杂度是log N，N是空闲区块的大小。
 * **Address order best fit**  
-    策略：找到满足所需大小的区块中最小的区块。如果找到多个区块，取内存地址最小的那个。
+    策略：找到满足所需大小的区块中最小的区块。如果找到多个区块，取内存地址最小的那个。  
     实现：平衡二叉查找树，时间复杂度是log N，N是空闲区块的大小。
 * **Address order first fit**  
-    策略：找到满足所需大小的区块中内存地址最小的区块。
+    策略：找到满足所需大小的区块中内存地址最小的区块。  
     实现：平衡二叉查找树，时间复杂度是log N，N是空闲区块的大小。
 * **Address order first fit carrier best fit**  
-    策略：找到满足所需大小的区块的载体中内存地址最小的载体，并根据Best fit策略取得其中的区块。
+    策略：找到满足所需大小的区块的载体中内存地址最小的载体，并根据Best fit策略取得其中的区块。  
     实现：平衡二叉查找树，时间复杂度是log N，N是空闲区块的大小。
 * **Address order first fit carrier address order best fit**  
-    策略：找到满足所需大小的区块的载体中内存地址最小的载体，并根据Adress order best fit策略取得其中的区块。
+    策略：找到满足所需大小的区块的载体中内存地址最小的载体，并根据Adress order best fit策略取得其中的区块。  
     实现：平衡二叉查找树，时间复杂度是log N，N是空闲区块的大小。
 * **Good fit**  
-    策略：试图去找到Best fit，但是尽量使搜索路径最小。
+    策略：试图去找到Best fit，但是尽量使搜索路径最小。  
     实现：好复杂，不翻译了。
 * **A fit**  
-    策略：不去查找是否有满足的区块，只取一个空闲的区块并看其是否满足要求，这个策略只打算用于临时内存分配。
-    实现：去free-list查找第一个空闲的区块，如果满足就用，不满足就创建新的载体。时间复杂度是常量。
-    这个策略在ERTS版本5.6.1之后除了temp_alloc以外其他的内存分配器拒绝使用。
+    策略：不去查找是否有满足的区块，只取一个空闲的区块并看其是否满足要求，这个策略只打算用于临时内存分配。  
+    实现：去free-list查找第一个空闲的区块，如果满足就用，不满足就创建新的载体。时间复杂度是常量。  
+    这个策略在ERTS版本5.6.1之后除了temp_alloc以外其他的内存分配器拒绝使用。  
 
 Apart from the ordinary allocators described above a number of pre-allocators are used for some specific data types. These pre-allocators pre-allocate a fixed amount of memory for certain data types when the run-time system starts. As long as pre-allocated memory is available, it will be used. When no pre-allocated memory is available, memory will be allocated in ordinary allocators. These pre-allocators are typically much faster than the ordinary allocators, but can only satisfy a limited amount of requests.
 
