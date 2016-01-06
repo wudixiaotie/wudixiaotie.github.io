@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Beam Internal Doc -- Carrier Migration!"
+author: "肖铁(Kevin)"
 categories: erlang
 ---
 

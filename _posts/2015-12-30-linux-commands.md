@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Linux commands"
-date:   2015-12-30 16:11:17 +0800
+author: "肖铁(Kevin)"
 categories: linux
 ---
 

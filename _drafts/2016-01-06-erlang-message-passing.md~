@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Erlang Message Passing"
+author: "肖铁(Kevin)"
+categories: erlang
+---
+
+##我的疑问
+
+按照[Beam Internal Doc -- DelayedDealloc!](/erlang/2015/12/29/beam-internal-doc-DelayedDealloc.html)说的意思，我以为这个Delayed Dealloc只是在调度器进行任务迁移的时候才有用。直到重新看了褚霸的文章，原来现代的多核cpu（又叫smp--Symmetric Multi-Processing对称多处理器）在设计的时候为了保证可扩展性的目的，为每个cpu单独分配了一部分内存，这样cpu和自己的内存组成的节点在一起称为NUMA（Non-Uniform Memory Access）系统。好处是cpu和内存在物理上都是分布，扩展性得到了有效的提高，每个cpu访问自己本地的内存速度远远快于远程访问其他cpu的内存。而我们的ERTS（erlang run-time system）为了也能从NUMA系统结构中受益，在SMP模式下，每个scheduler都对应一个CPU并且有自己的一套alloctor，所以每个scheduler所分配的内存都是CPU所属内存，这样效率是最高的。按照褚霸的意思消息的发送会导致释放瓶颈，而延迟释放则有效的解决了这个瓶颈，我就研究了一下ERTS的message passing。
+
+##消息的发送
+
+发消息的流程是这样的，在erlang进程层面是发消息的进程A先在自己的堆空间创建个待发送消息的副本，然后通知消息接收的进程B，B收到通知之后，把A的堆空间合并到B的堆空间中

@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-单纯就是为了分享，转载请注明出处，大家都是文明人，别干流氓的事。
+单纯就是为了找个地方记录我的成果，转载请注明出处，大家都是文明人，别干流氓的事。
 
 我原来的blog在 [wudixiaotie.iteye.com](http://wudixiaotie.iteye.com)
 

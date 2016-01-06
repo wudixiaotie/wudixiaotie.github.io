@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "erlang binary的GC"
-date:   2015-08-31 16:00:00 +0800
+author: "肖铁(Kevin)"
 categories: erlang
 ---
 
