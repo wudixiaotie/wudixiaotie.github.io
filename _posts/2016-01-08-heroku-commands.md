@@ -19,3 +19,13 @@ heroku run bundle exec <command>
 {% highlight console %}
 heroku logs --tail
 {% endhighlight %}
+
+##Change git after you change app name at website:
+{% highlight console %}
+heroku git:remote -a traffic-wudixiaotie
+{% endhighlight %}
+
+##Log level:
+{% highlight console %}
+heroku config:set LOG_LEVEL=DEBUG
+{% endhighlight %}
