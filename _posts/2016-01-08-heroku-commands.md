@@ -10,7 +10,12 @@ categories: heroku
 heroku ps
 {% endhighlight %}
 
-##Run command:
+##Run bundle command:
 {% highlight console %}
-heroku run
+heroku run bundle exec <command>
+{% endhighlight %}
+
+##tail log:
+{% highlight console %}
+heroku logs --tail
 {% endhighlight %}
