@@ -46,3 +46,6 @@ to start an gen_msg process, then the {ok, self()} will be the return value of p
 
 That's it. The code is [here](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/gen_msg.erl).  
 This is the module which use gen_msg as its behavior: [hpap_migration_control_center.erl](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/hpap_migration_control_center.erl).
+
+
+Have fun, guys! :)
