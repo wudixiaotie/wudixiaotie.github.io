@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  "Create your own behavoir"
+title:  "Create your own behaviour"
 author: "肖铁(Kevin)"
 categories: erlang
 ---
 
 I was writting an high performance asynchronous pool recently. I used gen_server  
-as the behavior of all the workers, workers doing their jobs by follow the message  
+as the behaviour of all the workers, workers doing their jobs by follow the message  
 they received. Then I found out most of the function that gen_server supported are  
 useless at this circumstances, like handle_call, handle_cast, code_change.  
 
@@ -20,10 +20,10 @@ is {'$gen_cast', _} then we should call handle_cast, otherwise we should call ha
 But in the matter of fact, handle_info is the only callback I usually use. I don't  
 use handle_call very often, and I cann't tell the diffence between handle_cast and  
 handle_info, I nearly do not use handle_cast&code_change for one single time. So  
-I think it's time to begin to create my own behavior.
+I think it's time to begin to create my own behaviour.
 
 
-This behavior I want to create is simple. It just have 3 callbacks: init/1, handle_msg/2,  
+This behaviour I want to create is simple. It just have 3 callbacks: init/1, handle_msg/2,  
 terminate/2. It can only handle message from process message queue. I call it gen_msg.  
 I want gen_msg adhering to the OTP Design Principles, so I need to use proc_lib:start_link/3  
 instead of erlang:spawn/3. There is some diffiences between normal processes and  
@@ -45,7 +45,7 @@ to start an gen_msg process, then the {ok, self()} will be the return value of p
 
 
 That's it. The code is [here](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/gen_msg.erl).  
-This is the module which use gen_msg as its behavior: [hpap_migration_control_center.erl](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/hpap_migration_control_center.erl).
+This is the module which use gen_msg as its behaviour: [hpap_migration_control_center.erl](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/hpap_migration_control_center.erl).
 
 
 Have fun, guys! :)
