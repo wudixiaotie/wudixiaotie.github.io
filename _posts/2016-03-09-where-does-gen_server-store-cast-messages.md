@@ -5,7 +5,7 @@ author: "肖铁(Kevin)"
 categories: erlang
 ---
 
-I was wandering where a gen_server process store cast messages. I know you can send  
+I was wondering where a gen_server process store cast messages. I know you can send  
 a message to it, then handle_info will be triggered. But what about handle_cast?  
 What about handle_call? If I run gen_server:cast(ID, Msg), then what happened?  
 Where the message go?  
