@@ -48,4 +48,61 @@ That's it. The code is [here](https://github.com/wudixiaotie/hpap/blob/master/sr
 This is the module which use gen_msg as its behaviour: [hpap_migration_control_center.erl](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/hpap_migration_control_center.erl).
 
 
+After I run some test between gen_msg([test_for_gen_msg.erl](https://github.com/wudixiaotie/simple_im/blob/master/test/test_for_gen_msg.erl)) and gen_server([test_for_gen_server.erl](https://github.com/wudixiaotie/simple_im/blob/master/test/test_for_gen_server.erl)), I found the performance improve obviously as shown below:  
+
+```console
+Erlang/OTP 18 [erts-7.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:true]
+
+Eshell V7.1  (abort with ^G)
+1> test_for_gen_msg:start_link().
+{ok,<0.36.0>}
+2> test_for_gen_server:start_link().
+{ok,<0.38.0>}
+3> test_for_gen_msg:test(10000).
+ok
+======gen_msg:  Times:10000 Cost:28706
+4> test_for_gen_msg:test(10000).
+ok
+======gen_msg:  Times:10000 Cost:28861
+5> test_for_gen_msg:test(10000).
+ok
+======gen_msg:  Times:10000 Cost:29590
+6> test_for_gen_server:test(10000).
+ok
+======gen_server:  Times:10000 Cost:42785
+7> test_for_gen_server:test(10000).
+ok
+======gen_server:  Times:10000 Cost:42638
+8> test_for_gen_server:test(10000).
+ok
+======gen_server:  Times:10000 Cost:43177
+9> test_for_gen_msg:test(50000).   
+ok
+======gen_msg:  Times:50000 Cost:1639784
+10> test_for_gen_msg:test(50000).
+ok
+======gen_msg:  Times:50000 Cost:1618026
+11> test_for_gen_msg:test(50000).
+ok
+======gen_msg:  Times:50000 Cost:1624411
+12> test_for_gen_server:test(50000).
+ok
+======gen_server:  Times:50000 Cost:2451298
+13> test_for_gen_server:test(50000).
+ok
+======gen_server:  Times:50000 Cost:2409513
+14> test_for_gen_server:test(50000).
+ok
+======gen_server:  Times:50000 Cost:2414638
+```
+
+When they got 10000 messages, gen_msg took round 0.028 seconds to process them all,  
+gen_server took 0.43. When the number of message increased to 50000, each time is  
+1.6 seconds and 2.4 seconds.
+
+
+So the result tells everything, gen_msg spent just 65% of what gen_server spent.  
+I think it is some kind of success. Hahaha!!!  
+
+
 Have fun, guys! :)
