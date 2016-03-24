@@ -36,12 +36,24 @@ Typical system messages are requests for trace output, and requests to suspend o
 resume process execution (used during release handling). Processes implemented  
 using standard behaviours automatically understand these messages. So I also have  
 to implemant system_continue/3, system_terminate/4, write_debug/3, system_get_state/1,  
-system_replace_state/2.
+system_replace_state/2, format_status/2.  
+
+
+The format_status/2 is used for give the otp real state of gen_msg process not all.  
+If I don't export format_status/2, then a new term contain the state of gen_msg  
+but with more information that you don't want to know will show in observer.
+
+
+When gen_msg process start, do_init/3 will be called, then I will set the '$initial_call'  
+in the process dictionary to module name of the process. Otherwise the value will be  
+gen_msg. That will make process behaviour be undefined when we watch from observer.  
+About this if you want to know more, check out sys:get_status/4.  
 
 
 There is something I want to mention, proc_lib:init_ack(Parent, {ok, self()}).  
 This means send {ok, self()} to the parent process which called proc_lib:start_link  
-to start an gen_msg process, then the {ok, self()} will be the return value of proc_lib:start_link.  
+to start an gen_msg process, then the {ok, self()} will be the return value of  
+proc_lib:start_link.  
 
 
 That's it. The code is [here](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/gen_msg.erl).  
