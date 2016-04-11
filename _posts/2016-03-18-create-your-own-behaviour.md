@@ -60,7 +60,7 @@ That's it. The code is [here](https://github.com/wudixiaotie/hpap/blob/master/sr
 This is the module which use gen_msg as its behaviour: [hpap_migration_control_center.erl](https://github.com/wudixiaotie/hpap/blob/master/src/hpap/hpap_migration_control_center.erl).
 
 
-After I run some test between gen_msg([test_for_gen_msg.erl](https://github.com/wudixiaotie/simple_im/blob/master/test/test_for_gen_msg.erl)) and gen_server([test_for_gen_server.erl](https://github.com/wudixiaotie/simple_im/blob/master/test/test_for_gen_server.erl)), I found the performance improve obviously as shown below:  
+After I run some test between gen_msg([test_for_gen_msg.erl](https://github.com/wudixiaotie/simple_im/blob/master/apps/simple_im/test/test_for_gen_msg.erl)) and gen_server([test_for_gen_server.erl](https://github.com/wudixiaotie/simple_im/blob/master/apps/simple_im/test/test_for_gen_server.erl)), I found the performance improve obviously as shown below:  
 
 ```console
 Erlang/OTP 18 [erts-7.1] [source] [64-bit] [smp:4:4] [async-threads:10] [hipe] [kernel-poll:true]
