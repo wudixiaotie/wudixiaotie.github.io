@@ -9,43 +9,43 @@ How to diagnose problems in production environment? The answer is [recon](https:
  in production to diagnose Erlang problems.  
 
 
-Set the current unit to be used by recon_alloc. This effects all functions that return bytes:
+**Set the current unit to be used by recon_alloc. This effects all functions that return bytes:**
 {% highlight erlang %}
 recon_alloc:set_unit(X1::byte | kilobyte | megabyte | gigabyte).
 {% endhighlight %}
 
 
-CPU useage top 5 processes:
+**CPU useage top 5 processes:**
 {% highlight erlang %}
 recon:proc_count(reductions, 5).
 {% endhighlight %}
 
 
-Memory useage top 5 processes:
+**Memory useage top 5 processes:**
 {% highlight erlang %}
 recon:proc_count(memory, 5).
 {% endhighlight %}
 
 
-Message queue length top 5 processes:
+**Message queue length top 5 processes:**
 {% highlight erlang %}
 recon:proc_count(message_queue_len, 5).
 {% endhighlight %}
 
 
-Total heap size top 5 processes:
+**Total heap size top 5 processes:**
 {% highlight erlang %}
 recon:proc_count(total_heap_size, 5).
 {% endhighlight %}
 
 
-Heap size top 5 processes:
+**Heap size top 5 processes:**
 {% highlight erlang %}
 recon:proc_count(heap_size, 5).
 {% endhighlight %}
 
 
-Memory:
+**Memory:**
 {% highlight erlang %}
 recon_alloc:memory(used).
 {% endhighlight %}
@@ -69,7 +69,7 @@ So a new mbc is allocated in heap. As the node runs, more memory is allocted, bu
 
 You may say "The erlang vm is suck!". No, the designer of the Beam knew there  
  will be a situation like this. So they give the Beam a strategy when process do  
- the normal gargage collection for some times, it will do a fullsweep GC.  
+ the normal gargage collection for some times, it will do a **fullsweep GC**.  
 
 
 What is fullsweep GC? Unlike the normal GC, the fullsweep GC dealloced the mbc.  
