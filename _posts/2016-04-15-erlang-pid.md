@@ -51,23 +51,79 @@ The number of simultaneously existing process must smaller than 1024, so the big
  pid of the node is <0.**1023**.0>, but when some process died, the index of pid will  
  growth, like <0.**1024**.0>, <0.**2058**.0>. When the index upto MAXPROCS, the index will  
  start with **0**. The third part of the pid will incease one, like <0.0.**1**>. **So we don't  
- need to worry about the pid will repeat when the node runs long enough.**
+ need to worry about the pid will repeat when the node runs long enough.**  
 
 
-<!-- Se -->
+If you send a Pid to other node, the first part of pid will change.  
 
 
+**Node a**
+{% highlight console %}
+>erl -sname a
 
-<!-- term_to_binary(node()).
-term_to_binary(self()).
+Erlang/OTP 18 [erts-7.1] [source] [64-bit] [smp:8:8] [async-threads:10] [kernel-poll:false]
+
+Eshell V7.1  (abort with ^G)
+(a@xiaotie-Inspiron-7720)1> register(shell, self()).
+true
+{% endhighlight %}
 
 
-Process id < A.B.C > is composed of:
+**Node b**
+{% highlight console %}
+>erl -sname b
 
-A, node id which is not arbitrary but the internal index for that node in dist_entry. (It is actually the atom slot integer for the node name.)
-B, process index which refers to the internal index in the proctab, (0 -> MAXPROCS).
-C, Serial which increases every time MAXPROCS has been reached.
-The creation tag of 2 bits is not displayed in the pid but is used internally and increases every time the node restarts.
+Erlang/OTP 18 [erts-7.1] [source] [64-bit] [smp:8:8] [async-threads:10] [kernel-poll:false]
+
+Eshell V7.1  (abort with ^G)
+(b@xiaotie-Inspiron-7720)1> net_adm:ping('a@xiaotie-Inspiron-7720').
+pong
+(b@xiaotie-Inspiron-7720)2> {shell, 'a@xiaotie-Inspiron-7720'} ! self().
+<0.39.0>
+{% endhighlight %}
 
 
-So, you can se that the node name is internally stored in the pid. More info in this section of Learn You Some Erlang. -->
+**Node a**
+{% highlight console %}
+(a@xiaotie-Inspiron-7720)2> flush().
+Shell got <6807.39.0>
+ok
+{% endhighlight %}
+
+
+You can see the first part of pid changed from 0 to 6807, this number is different  
+ in each node. That means even there is a node c, the message it receive will not  
+ be <6807.39.0>, but may be <7122.39.0> or whatever. Since you already know the pid  
+ of process on the other node, you can send message to it directly.  
+
+
+Then there is a problem, if **node b** want to store pid like **<0.39.0>** to some kind of  
+ public database or cache like redis or postgresql, how could I do to make **node a** get  
+ the remote type(<6807.39.0>) not the local type(<0.39.0>) when it read pid data  
+ from db?
+
+
+I use term_to_binary to solve the problem!
+
+
+{% highlight console %}
+Erlang/OTP 18 [erts-7.1] [source] [64-bit] [smp:8:8] [async-threads:10] [kernel-poll:false]
+
+Eshell V7.1  (abort with ^G)
+1> erlang:term_to_binary(node()).
+<<131,100,0,13,110,111,110,111,100,101,64,110,111,104,111,
+  115,116>>
+2> erlang:term_to_binary(self()).
+<<131,103,100,0,13,110,111,110,111,100,101,64,110,111,104,
+  111,115,116,0,0,0,33,0,0,0,0,0>>
+{% endhighlight %}
+
+
+Like the highlight code above, as you can see binary **<<100,0,13,110,111,110,111,100,101,64,110,111,104,111,115,116>>**  
+ both in node() and self(), it means the pid itself already contains the node info.  
+So if I use erlang:term_to_binary to change the pid to binary, then store the binary  
+ to redis, it will be an remote pid when other node get it and use erlang:binary_to_term  
+ to transform it.
+
+
+Have fun, guys! :)
