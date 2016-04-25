@@ -126,4 +126,8 @@ So if I use erlang:term_to_binary to change the pid to binary, then store the bi
  to transform it.
 
 
+**So if you store the erlang pid to ssdb or redis or other kind of db, and want other  
+node to read it, use erlang:term_to_binary.**
+
+
 Have fun, guys! :)
