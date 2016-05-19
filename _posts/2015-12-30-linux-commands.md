@@ -29,3 +29,47 @@ $ netstat -st
 {% highlight console %}
 $ tcpdump -X -s 0  -i 3 tcp port 8080
 {% endhighlight %}
+
+###git:  
+1.clone a branch from git origin:  
+{% highlight console %}
+git clone -b develop git@192.168.1.21:project
+{% endhighlight %}
+
+2.create a new feature branch from this branch  
+{% highlight console %}
+git checkout -b feature-001 develop
+{% endhighlight %}
+
+3.finish  
+{% highlight console %}
+git checkout develop
+git pull
+git diff --name-status develop feature
+git diff develop feature
+{% endhighlight %}
+
+4.merge back  
+{% highlight console %}
+git merge --no-ff  feature
+{% endhighlight %}
+
+5.push to origin  
+{% highlight console %}
+git push origin develop
+{% endhighlight %}
+
+6.delete local branch  
+{% highlight console %}
+git branch -d feature
+{% endhighlight %}
+
+7.delete remote branch  
+{% highlight console %}
+git push origin --delete feature
+{% endhighlight %}
+
+8.if the branch still in `branch -a` then remove such stale branches  
+{% highlight console %}
+git branch -d -r origin/feature
+{% endhighlight %}
