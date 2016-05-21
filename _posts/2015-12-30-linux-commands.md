@@ -15,6 +15,7 @@ categories: linux
 {% highlight console %}
 $ netstat -apn | grep <Port>
 $ netstat -st
+$ lsof -i -n
 {% endhighlight %}
 
 ###抓包:  
