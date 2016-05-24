@@ -13,6 +13,7 @@ heroku ps
 ##Run bundle command:
 {% highlight console %}
 heroku run bundle exec <command>
+heroku run bundle exec rails console
 {% endhighlight %}
 
 ##tail log:
