@@ -13,7 +13,6 @@ heroku ps
 ##Run bundle command:
 {% highlight console %}
 heroku run bundle exec <command>
-heroku run bundle exec rails console
 {% endhighlight %}
 
 ##tail log:
@@ -29,4 +28,9 @@ heroku git:remote -a traffic-wudixiaotie
 ##Log level:
 {% highlight console %}
 heroku config:set LOG_LEVEL=DEBUG
+{% endhighlight %}
+
+##Run console:
+{% highlight console %}
+heroku run console --app traffic
 {% endhighlight %}
