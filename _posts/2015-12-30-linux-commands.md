@@ -44,6 +44,7 @@ git checkout -b feature-001 develop
 
 3.finish  
 {% highlight console %}
+git commit --no-verify -m "..."
 git checkout develop
 git pull
 git diff --name-status develop feature
