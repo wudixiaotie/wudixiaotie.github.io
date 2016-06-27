@@ -13,7 +13,7 @@ categories: linux
 
 ###网络相关信息:  
 {% highlight console %}
-$ netstat -apn | grep <Port>
+$ netstat -anp tcp | grep <Port>
 $ netstat -st
 $ lsof -i -n
 {% endhighlight %}
