@@ -31,6 +31,13 @@ $ lsof -i -n
 $ tcpdump -X -s 0  -i 3 tcp port 8080
 {% endhighlight %}
 
+###alias
+{% highlight console %}
+alias gnw='git log --color --graph --pretty=format:'\''%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'\'' --abbrev-commit --all'
+alias l='ls -alFG'
+alias ll='ls -AlFG'
+{% endhighlight %}
+
 ###git:  
 1.clone a branch from git origin:  
 {% highlight console %}
