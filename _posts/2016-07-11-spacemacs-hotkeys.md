@@ -6,10 +6,10 @@ author: "肖铁(Kevin)"
 
 ###Open file
 
-| Name | Command |
-|---|---|
-|open-file | <kbd>C</kbd>-<kbd>x</kbd> <kbd>C</kbd>-<kbd>f</kbd>|
-|open-file-in-other-window | <kbd>C</kbd>-<kbd>x</kbd> <kbd>4</kbd> <kbd>f</kbd>|
+    | Name | Command |
+    |---|---|
+    |open-file | <kbd>C</kbd>-<kbd>x</kbd> <kbd>C</kbd>-<kbd>f</kbd>|
+    |open-file-in-other-window | <kbd>C</kbd>-<kbd>x</kbd> <kbd>4</kbd> <kbd>f</kbd>|
 
 ###Undo
 
