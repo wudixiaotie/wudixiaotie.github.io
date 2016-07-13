@@ -17,6 +17,8 @@ github_username:  wudixiaotie
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
 
 # Gems
 gems: [jekyll-paginate, jekyll-archives]
