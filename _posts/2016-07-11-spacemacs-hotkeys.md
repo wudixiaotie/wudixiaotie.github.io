@@ -77,3 +77,21 @@ author: "肖铁(Kevin)"
 | Name | Command |
 |---|---|
 |match-replace | <kbd>M</kbd>-<kbd>%</kbd>|
+
+###Ready Only
+| Name | Command|
+|---|---|
+|toggle-ready-only-mode | <kbd>C</kbd>-<kbd>x</kbd> <kbd>C</kbd>-<kbd>q</kbd>|
+
+###Buffer
+| Name | Command|
+|---|---|
+|open-buffer | <kbd>C</kbd>-<kbd>x</kbd> <kbd>b</kbd>|
+|change-buffer-major-mode | <kbd>M</kbd>-<kbd>x</kbd> `text-mode` <kbd>RET</kbd>|
+
+###Erlang Mode
+| Name | Command|
+|---|---|
+|begin-of-function | <kbd>M</kbd>-<kbd>a</kbd>|
+|end-of-function | <kbd>M</kbd>-<kbd>e</kbd>|
+|comment-dwim | <kbd>M</kbd>-<kbd>;</kbd>|

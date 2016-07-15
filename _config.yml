@@ -16,12 +16,9 @@ twitter_username: wudixiaotie
 github_username:  wudixiaotie
 
 # Build settings
-# markdown: kramdown
-# kramdown:
-#   input: GFM
-markdown: redcarpet2
+markdown: redcarpet
 redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables",     "with_toc_data"]
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 
 # Gems
 gems: [jekyll-paginate, jekyll-archives]
