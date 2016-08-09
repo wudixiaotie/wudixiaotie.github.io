@@ -2,6 +2,7 @@
 layout: post
 title: "Spacemacs Hotkeys"
 author: "肖铁(Kevin)"
+categories: emacs
 ---
 
 ###Open file
@@ -95,3 +96,9 @@ author: "肖铁(Kevin)"
 |begin-of-function | <kbd>M</kbd>-<kbd>a</kbd>|
 |end-of-function | <kbd>M</kbd>-<kbd>e</kbd>|
 |comment-dwim | <kbd>M</kbd>-<kbd>;</kbd>|
+
+###Error
+| Name | Command|
+|---|---|
+|fly-check-next-error | <kbd>C</kbd>-<kbd>c</kbd> <kbd>!</kbd> <kbd>n</kbd>|
+
