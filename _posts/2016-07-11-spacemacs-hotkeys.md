@@ -46,6 +46,7 @@ categories: emacs
 | Name | Command |
 |---|---|
 |kill-buffer | <kbd>C</kbd>-<kbd>x</kbd> <kbd>k</kbd>|
+|kill-this-buffer | <kbd>s</kbd>-<kbd>k</kbd>|
 
 
 ###Move
