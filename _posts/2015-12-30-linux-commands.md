@@ -23,7 +23,7 @@ ${var##*.}:该命令的作用是去掉变量var从左边算起的最后一个'.'
 
 ###网络相关信息:  
 {% highlight console %}
-$ netstat -anp tcp | grep <Port>
+$ netstat -atln | grep <Port>
 $ netstat -st
 $ lsof -i -n
 {% endhighlight %}
