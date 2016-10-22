@@ -16,9 +16,7 @@ twitter_username: wudixiaotie
 github_username:  wudixiaotie
 
 # Build settings
-markdown: redcarpet
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+markdown: kramdown
 
 # Gems
 gems: [jekyll-paginate, jekyll-archives]
