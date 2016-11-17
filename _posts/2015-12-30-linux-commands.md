@@ -10,21 +10,21 @@ categories: linux
 ```bash
 ifconfig | awk 'ORS= NR%2 ? " " : "\n" { print }'
 ```
-print row 2 column 3
+print row 2 column 3:  
 ```bash
 ifconfig | awk 'NR == 2 { print $3 }'
 ```
 
-###grep
-do not show "a"
+###grep  
+do not show "a":  
 ```bash
 ifconfig | grep -v 'a'
 ```
-show 2 line after context
+show 2 line after context:  
 ```bash
 ifconfig | grep -A 2 "inet"
 ```
-show 1 line before context
+show 1 line before context:  
 ```bash
 ifconfig | grep -B 1 "inet"
 ```
