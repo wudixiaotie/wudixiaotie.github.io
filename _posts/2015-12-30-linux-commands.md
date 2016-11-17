@@ -5,6 +5,13 @@ author: "肖铁(Kevin)"
 categories: linux
 ---
 
+###awk
+2 lines into 1 line:  
+```bash
+ifconfig | awk 'ORS= NR%2 ? " " : "\n" { print }'
+ifconfig | awk -F ':' '{ print $1 }' | grep -v ether | awk 'ORS= NR%2 ? " " : "\n" { print }' | grep '192.0.0.0' | awk '{ print $1 }'
+```
+
 ###${}
 ${var##*/}:该命令的作用是去掉变量var从左边算起的最后一个'/'字符及其左边的内容  
 ${var##*.}:该命令的作用是去掉变量var从左边算起的最后一个'.'字符及其左边的内容  
