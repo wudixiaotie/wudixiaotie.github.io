@@ -103,3 +103,7 @@ categories: emacs
 |---|---|
 |fly-check-next-error | <kbd>C</kbd>-<kbd>c</kbd> <kbd>!</kbd> <kbd>n</kbd>|
 
+###Switch Frame
+| Name | Command|
+|---|---|
+|switch-frame | <kbd>s</kbd>-<kbd>``</kbd> |
