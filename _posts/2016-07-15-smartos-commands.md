@@ -15,3 +15,4 @@ categories: smartos
 |vmadm | `vmadm` |
 |svcadm | `svcadm` |
 |svcs | `svcs` |
+|all-mac-addrs | `dladm show-vnic`  |
