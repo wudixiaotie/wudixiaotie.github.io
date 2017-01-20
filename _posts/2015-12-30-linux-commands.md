@@ -32,6 +32,12 @@ show 1 line before context:
 ifconfig | grep -B 1 "inet"
 ```
 
+###test  
+if file exist then run commands
+```bash
+test -e .bashrc && source .bashrc
+```
+
 ###${}
 ${var##*/}:该命令的作用是去掉变量var从左边算起的最后一个'/'字符及其左边的内容  
 ${var##*.}:该命令的作用是去掉变量var从左边算起的最后一个'.'字符及其左边的内容  
